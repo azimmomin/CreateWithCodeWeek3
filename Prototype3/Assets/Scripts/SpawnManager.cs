@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -9,13 +7,32 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private float startDelay = 1f;
     [SerializeField] private float spawnInterval = 3f;
 
+    private bool isSpawningActive = true;
+
+    private void Awake()
+    {
+        PlayerController.OnGameOver += OnGameOver;
+    }
+
+    private void OnGameOver()
+    {
+        isSpawningActive = false;
+    }
+
     private void Start()
     {
+        isSpawningActive = true;
         InvokeRepeating("SpawnObstacle", startDelay, spawnInterval);
     }
 
     private void SpawnObstacle()
     {
-        Instantiate(objectToSpawn, spawnPoint.position, objectToSpawn.transform.rotation);
+        if (isSpawningActive)
+            Instantiate(objectToSpawn, spawnPoint.position, objectToSpawn.transform.rotation);
+    }
+
+    private void OnDestroy()
+    {
+        PlayerController.OnGameOver -= OnGameOver;
     }
 }
