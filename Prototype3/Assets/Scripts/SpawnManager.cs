@@ -2,7 +2,7 @@
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private GameObject objectToSpawn;
+    [SerializeField] private GameObject[] objectsToSpawn;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float startDelay = 1f;
     [SerializeField] private float spawnInterval = 3f;
@@ -28,7 +28,10 @@ public class SpawnManager : MonoBehaviour
     private void SpawnObstacle()
     {
         if (isSpawningActive)
+        {
+            GameObject objectToSpawn = objectsToSpawn[Random.Range(0, objectsToSpawn.Length)];
             Instantiate(objectToSpawn, spawnPoint.position, objectToSpawn.transform.rotation);
+        }
     }
 
     private void OnDestroy()

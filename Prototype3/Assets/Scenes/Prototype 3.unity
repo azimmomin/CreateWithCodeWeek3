@@ -403,8 +403,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc099d98d72d4cf5a40bac653c89c2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToSpawn: {fileID: 5106970792238808576, guid: 69c206b7577874ca7890472f46a35c5e,
-    type: 3}
+  objectsToSpawn:
+  - {fileID: 3386588730399704985, guid: e5f6a010524144319b469e017b7ce8c0, type: 3}
+  - {fileID: 2278582011144053321, guid: 20bec07e5520e402391e758996558d7d, type: 3}
+  - {fileID: 5106970792238808576, guid: 69c206b7577874ca7890472f46a35c5e, type: 3}
   spawnPoint: {fileID: 1279822571}
   startDelay: 1
   spawnInterval: 3
