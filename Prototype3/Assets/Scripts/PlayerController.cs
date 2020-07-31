@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public static Action OnGameOver;
+    public static Action<bool> OnDoubleSpeedActive;
 
     [SerializeField] private float jumpForce = 10f;
     [SerializeField] private int maxJumps = 2;
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private AudioSource playerAudioSource = null;
     private bool isOnGround = true;
     private int jumpCount = 0;
+    private bool isDoubleSpeedActive = false;
     private bool isGameOver = false;
 
     private void Start()
@@ -32,6 +34,12 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
             Jump();
+
+        if (Input.GetKey(KeyCode.RightArrow))
+            SetDoubleSpeedActive(true);
+
+        if (Input.GetKeyUp(KeyCode.RightArrow))
+            SetDoubleSpeedActive(false);
     }
 
     private void Jump()
@@ -46,6 +54,16 @@ public class PlayerController : MonoBehaviour
         playerAnimator.SetTrigger("Jump_trig");
         playerAudioSource.PlayOneShot(jumpSound, 1f);
         jumpCount++;
+    }
+
+    private void SetDoubleSpeedActive(bool isActive)
+    {
+        // We don't want to spam redundant events.
+        if (isDoubleSpeedActive == isActive)
+            return;
+
+        isDoubleSpeedActive = isActive;
+        OnDoubleSpeedActive?.Invoke(isActive);
     }
 
     private void OnCollisionEnter(Collision collision)

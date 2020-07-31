@@ -11,10 +11,12 @@ public class MoveLeft : MonoBehaviour
     [SerializeField] private float speed = 10f;
 
     private bool isMovementActive = true;
+    private float currentSpeed;
 
     private void Awake()
     {
         PlayerController.OnGameOver += OnGameOver;
+        PlayerController.OnDoubleSpeedActive += SetDoubleSpeedActive;
     }
 
     private void OnGameOver()
@@ -22,20 +24,27 @@ public class MoveLeft : MonoBehaviour
         isMovementActive = false;
     }
 
+    private void SetDoubleSpeedActive(bool isActive)
+    {
+        currentSpeed = isActive ? currentSpeed * 2f : speed;
+    }
+
     private void Start()
-    {   
+    {
+        currentSpeed = speed;
         isMovementActive = true;
     }
 
     private void Update()
     {
         if (isMovementActive)
-            transform.Translate(Vector3.left * (speed * Time.deltaTime));
+            transform.Translate(Vector3.left * (currentSpeed * Time.deltaTime));
     }
 
     private void OnDestroy()
     {
         PlayerController.OnGameOver -= OnGameOver;
+        PlayerController.OnDoubleSpeedActive -= SetDoubleSpeedActive;
     }
 
     private void OnCollisionExit(Collision collision)
