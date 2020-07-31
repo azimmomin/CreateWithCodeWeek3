@@ -2,8 +2,8 @@
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private GameObject[] objectsToSpawn;
-    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private GameObject[] objectsToSpawn = null;
+    [SerializeField] private Transform spawnPoint = null;
     [SerializeField] private float startDelay = 1f;
     [SerializeField] private float spawnInterval = 3f;
 
