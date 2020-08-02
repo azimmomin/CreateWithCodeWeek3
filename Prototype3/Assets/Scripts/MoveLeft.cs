@@ -10,18 +10,24 @@ public class MoveLeft : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
 
-    private bool isMovementActive = true;
+    public bool IsMovementActive { get; set; }
     private float currentSpeed;
 
     private void Awake()
     {
+        PlayerController.OnGameStarted += OnGameStarted;
         PlayerController.OnGameOver += OnGameOver;
         PlayerController.OnDoubleSpeedActive += SetDoubleSpeedActive;
     }
 
+    private void OnGameStarted()
+    {
+        IsMovementActive = true;
+    }
+
     private void OnGameOver()
     {
-        isMovementActive = false;
+        IsMovementActive = false;
     }
 
     private void SetDoubleSpeedActive(bool isActive)
@@ -32,24 +38,24 @@ public class MoveLeft : MonoBehaviour
     private void Start()
     {
         currentSpeed = speed;
-        isMovementActive = true;
     }
 
     private void Update()
     {
-        if (isMovementActive)
+        if (IsMovementActive)
             transform.Translate(Vector3.left * (currentSpeed * Time.deltaTime));
-    }
-
-    private void OnDestroy()
-    {
-        PlayerController.OnGameOver -= OnGameOver;
-        PlayerController.OnDoubleSpeedActive -= SetDoubleSpeedActive;
     }
 
     private void OnCollisionExit(Collision collision)
     {
         if (gameObject.CompareTag("Obstacle") && collision.gameObject.CompareTag("Ground"))
             Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        PlayerController.OnGameStarted -= OnGameStarted;
+        PlayerController.OnGameOver -= OnGameOver;
+        PlayerController.OnDoubleSpeedActive -= SetDoubleSpeedActive;
     }
 }

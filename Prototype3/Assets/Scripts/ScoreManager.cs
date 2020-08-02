@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
@@ -11,22 +10,12 @@ public class ScoreManager : MonoBehaviour
 
     private void Awake()
     {
-        PlayerController.OnDoubleSpeedActive += SetDoubleSpeedActive;
+        PlayerController.OnGameStarted += OnGameStarted;
         PlayerController.OnGameOver += OnGameOver;
+        PlayerController.OnDoubleSpeedActive += SetDoubleSpeedActive;
     }
 
-    private void SetDoubleSpeedActive(bool isActive)
-    {
-        scoreMultipler = isActive ? 2U : 1U;
-    }
-
-    private void OnGameOver()
-    {
-        StopAllCoroutines();
-        Debug.Log($"Final Score: {currentScore}");
-    }
-
-    private void Start()
+    private void OnGameStarted()
     {
         StartCoroutine(TrackScore());
     }
@@ -39,6 +28,17 @@ public class ScoreManager : MonoBehaviour
             currentScore += (pointsPerSecond * scoreMultipler);
             Debug.Log($"Score: {currentScore}");
         }
+    }
+
+    private void OnGameOver()
+    {
+        StopAllCoroutines();
+        Debug.Log($"Final Score: {currentScore}");
+    }
+
+    private void SetDoubleSpeedActive(bool isActive)
+    {
+        scoreMultipler = isActive ? 2U : 1U;
     }
 
     private void OnDestroy()
