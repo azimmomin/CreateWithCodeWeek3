@@ -63,6 +63,9 @@ public class PlayerController : MonoBehaviour
             return;
 
         isDoubleSpeedActive = isActive;
+
+        float animationSpeed = isDoubleSpeedActive ? 2f : 1f;
+        playerAnimator.SetFloat("Speed_f", animationSpeed);
         OnDoubleSpeedActive?.Invoke(isActive);
     }
 
